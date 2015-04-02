@@ -1,0 +1,82 @@
+* Changed name of method 'showThings' to createLayout
+* Added Comments to ClueGame
+* Added Comments to Detective Notes
+*   fixed up control panel
+|\  
+| * Changed ControlPanel and Room Texts
+* | Board GUI Finished
+|/  
+* Added ControlPanel and Detective Notes
+* All GUI features working but board grid
+* Started Gui Work
+* Passing Computer Suggestion Tests
+* added Suggestion class to version control
+* Failing Computer Suggestion Tests & Changed where players are stored to the game class
+* Passing Target Selection Tests
+* Query Players Passing Tests and Target Selection Failing Tests
+* Query All Players Failing Tests
+* Disprove Suggestion Passing Tests
+* Disprove Suggestion Failing Tests
+* Added Extra Tests, All Pass
+* Passing Accusation Tests
+* Failing Accusation Tests
+* Dealing Tests Passing
+* Failing Deck tests No Errors
+* Failing Deck tests
+* Passing Player Tests
+* Tracking all new files
+* Added new empty functions for Clue Players
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * Got all of the tests workinggit pull
+* | because git is telling me to
+|/  
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * Small changes to test
+* | spreadsheet identifying tests added
+|/  
+* failing tests for part 2 completed
+* all tests pass for part 2 of clue board
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * Finnished testBadRoom success
+* | implemented functions in board class and boardcell class
+|/  
+* Finnished testBoardDimension success
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * legend file input completed
+* | Working on reading in the board
+|/  
+* finished tests
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * Changed our tests
+* | changed out tests for our format files
+|/  
+* our failing test and instructor format files
+* changes to get rid of errors
+* Added gitInitial
+* changes to get rid of errors
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * getters for junit tests
+* | Added getters
+|/  
+* added instructor junit tests
+* constructor for ClueGame class
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * cluegame and board classes changed to contain everything specified in the class details
+* | Set up second half of the classes
+|/  
+* trying to get git to work
+* Delete .project
+* Delete .gitignore
+* Delete .classpath
+* added config files
+*   Merge branch 'master' of https://github.com/khislop/ClueGame
+|\  
+| * Initial commit
+* Initial commit

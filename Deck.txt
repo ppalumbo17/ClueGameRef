@@ -1,0 +1,21 @@
+Colonel Mustard, P
+Professor Plum, P
+Miss Scarlet, P
+Mrs. Peacock, P
+Mrs. White, P
+Reverend Green, P
+Conservatory, R
+Kitchen, R
+Ballroom, R
+Billiard Room, R
+Library, R
+Study, R
+Dining Room, R
+Lounge, R
+Hall, R
+Knife, W
+Pipe, W
+Revolver, W
+Candlestick, W
+Rope, W
+Wrench, W
