@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import GUI.ControlPanelGUI;
@@ -29,10 +30,10 @@ import GUI.DetectiveNotes;
 
 
 public class ClueGame extends JFrame{
-	private Board gameBoard = new Board();
+	private Board gameBoard;
 	private final int WINDOW_WIDTH = 1000;
 	private final int WINDOW_HEIGHT = 870;
-	private Player humanPlayer;
+	protected static Player humanPlayer;
 	private static Map<Character, String> rooms = new HashMap<Character, String>();
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	private ArrayList<Card> people = new ArrayList<Card>();
@@ -42,7 +43,7 @@ public class ClueGame extends JFrame{
 	private Map<String,ArrayList<Integer>> startingPositions = new HashMap<String, ArrayList<Integer>>();
 	private Map<String, Color> players = new HashMap<String, Color>();
 	private Solution solution;
-	private ControlPanelGUI controlPanel = new ControlPanelGUI();
+	private ControlPanelGUI controlPanel;
 	private DetectiveNotes detectiveNotes = new DetectiveNotes();
 	
 	private JMenuBar menuBar = new JMenuBar();
@@ -66,22 +67,25 @@ public class ClueGame extends JFrame{
 	}
 	
 	public ClueGame(String layout, String legend, String player, String deck) throws BadConfigFormatException {
+		gameBoard=new Board();
 		loadRoomConfig(legend);
 		loadConfigFiles(layout);
 		loadPlayerConfig(player);
 		loadDeckConfig(deck);
 		
+		gameBoard.calcAdjacencies();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Clue Game");
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setResizable(false);
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
-		
-		JPanel board = gameBoard;
-		add(board, BorderLayout.CENTER);
-		JPanel cp = controlPanel.createLayout();
-		add(cp, BorderLayout.SOUTH);
+		add(gameBoard, BorderLayout.CENTER);
+		controlPanel = new ControlPanelGUI(gameBoard);
+		add(controlPanel, BorderLayout.SOUTH);
+
+		setVisible(true);
+		JOptionPane.showMessageDialog(null, "You are "+humanPlayer.getName()+", press next player to begin", "Welocme to Clue", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	//Creates the Menu Bar
@@ -331,7 +335,6 @@ public class ClueGame extends JFrame{
 	public static void main(String[] args) throws BadConfigFormatException {
 		ClueGame g = new ClueGame("ClueLayout.csv", "RoomLegend.txt", "Players.txt", "Deck.txt");
 		
-		g.setVisible(true);
 		
 	}
 

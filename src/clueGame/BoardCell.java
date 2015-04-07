@@ -7,7 +7,7 @@ public abstract class BoardCell {
 	private int row, column;
 	protected DoorDirection dd;
 	protected int rectSize = 30;
-	
+	protected boolean flag;
 	
 	public boolean isWalkway(){
 		return false;	
@@ -17,6 +17,12 @@ public abstract class BoardCell {
 	}
 	public boolean isDoorway(){
 		return false;
+	}
+	public void setFlag(boolean b){
+		flag=b;
+	}
+	public boolean getFlag(){
+		return flag;
 	}
 	// Add method draw when making GUI
 	public int getRow() {
@@ -32,7 +38,6 @@ public abstract class BoardCell {
 		this.column = column;
 	}
 	
-	abstract void draw(Graphics g, Board b);
-	
+	abstract void draw(Graphics g);
 	
 }

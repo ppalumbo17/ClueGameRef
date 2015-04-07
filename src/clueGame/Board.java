@@ -1,7 +1,11 @@
 package clueGame;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,7 +21,8 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 
-public class Board extends JPanel{
+public class Board extends JPanel implements MouseListener{
+	private boolean turnOver;
 	private int numRows, numColumns;
 	private int rectSize = 30;
 	private static int rowpix, colpix;
@@ -27,8 +32,15 @@ public class Board extends JPanel{
 	private Map<BoardCell, LinkedList<BoardCell>> adjMtx = new HashMap<BoardCell, LinkedList<BoardCell>>();
 	public BoardCell[][] board;
 	private int numDraws = 0;
+	private Graphics gra;
+	private boolean readyForMouse;
 	//private Graphics g;
+	public boolean checkTurn(){
+		return turnOver;
+	}
 	public void loadBoardConfig(String layout) throws BadConfigFormatException{
+		turnOver=true;
+		addMouseListener(this);
 		try {
 			numRows = 1;
 			Scanner fin = new Scanner(new File(layout));
@@ -66,8 +78,7 @@ public class Board extends JPanel{
 			e.printStackTrace();
 		}
 		rowpix = numRows;
-		colpix =numColumns;
-		
+		colpix =numColumns;		
 	}
 	
 	public void calcTargets(int row, int col, int diceRoll){
@@ -163,19 +174,26 @@ public class Board extends JPanel{
 	public void setRooms(Map<Character, String> rooms) {
 		this.rooms = rooms;
 	}
-	
+	public void highlightTargets(BoardCell q,int roll){
+		turnOver=false;
+		calcTargets(q.getRow(),q.getColumn(),roll);
+		for(BoardCell c:targets){
+			c.setFlag(true);
+		}
+		repaint();
+		readyForMouse=true;
+	}
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
+		gra=g;
 		for(int i = 0; i< rowpix; i++){
 			for(int j = 0; j<colpix; j++){
 				BoardCell bc = getBoardCellAt(i, j);
-				bc.draw(g, this);
+				bc.draw(g);
 				numDraws++;
-				
 			}
-			
 		}
 		for(Player x: ClueGame.getGamePlayers()){
 				x.draw(g, this);
@@ -195,6 +213,30 @@ public class Board extends JPanel{
 
 	
 	}
-
+	@Override
+    public void mousePressed(MouseEvent e) {
+		if(readyForMouse){
+			if(getBoardCellAt(e.getY()/30,e.getX()/30).getFlag()){
+				ClueGame.humanPlayer.setLocation(getBoardCellAt(e.getY()/30,e.getX()/30));
+				repaint();
+				readyForMouse=false;
+				for(BoardCell c:targets){
+					c.setFlag(false);
+				}
+				turnOver=true;
+			}
+			else{
+				JOptionPane.showMessageDialog(null,"INVALID MOVING LOCATION! PLEASE SELECT HIGHLIGHTED BOX!","ERROR",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 	
 }

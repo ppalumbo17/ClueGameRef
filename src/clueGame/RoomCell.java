@@ -69,31 +69,36 @@ public class RoomCell extends BoardCell{;
 	public char getInitial() {
 		return roomInitial;
 	}
-
-
-
 	@Override
-	public void draw(Graphics g, Board b) {
-		int rowpix = getRow();
-		int colpix = getColumn();
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(colpix*rectSize, rowpix*rectSize, rectSize, rectSize);
-		g.setColor(Color.BLUE);
-		if(isDoorway()){
-			switch(dd){
-			case DOWN:
-				g.fillRect(colpix*rectSize, rowpix*rectSize + (rectSize - rectSize/5) , rectSize, rectSize/5);
-				break;
-			case LEFT:
-				g.fillRect(colpix*rectSize, rowpix*rectSize, rectSize/5, rectSize);
-				break;
-			case RIGHT:
-				g.fillRect(colpix*rectSize + (rectSize - rectSize/5), rowpix*rectSize, rectSize/5, rectSize);
-				break;
-			case UP:
-				g.fillRect(colpix*rectSize, rowpix*rectSize, rectSize, rectSize/5);
-				break;
+	public void draw(Graphics g) {
+		if(!flag){
+			int rowpix = getRow();
+			int colpix = getColumn();
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(colpix*rectSize, rowpix*rectSize, rectSize, rectSize);
+			g.setColor(Color.BLUE);
+			if(isDoorway()){
+				switch(dd){
+				case DOWN:
+					g.fillRect(colpix*rectSize, rowpix*rectSize + (rectSize - rectSize/5) , rectSize, rectSize/5);
+					break;
+				case LEFT:
+					g.fillRect(colpix*rectSize, rowpix*rectSize, rectSize/5, rectSize);
+					break;
+				case RIGHT:
+					g.fillRect(colpix*rectSize + (rectSize - rectSize/5), rowpix*rectSize, rectSize/5, rectSize);
+					break;
+				case UP:
+					g.fillRect(colpix*rectSize, rowpix*rectSize, rectSize, rectSize/5);
+					break;
+				}
 			}
+		}
+		else{
+			g.setColor(new Color(0,255,255));
+			g.fillRect(getColumn()*rectSize, getRow()*rectSize, rectSize, rectSize);
+			g.setColor(Color.BLACK);
+			g.drawRect(getColumn()*rectSize,getRow()*rectSize,rectSize,rectSize);
 		}
 		
 	}
