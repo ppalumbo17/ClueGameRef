@@ -34,18 +34,20 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 	Board board;
 	JButton nextPlayer, accusation;
 	ArrayList<Player> players;
-	Player thisPlayer;
+	protected Player thisPlayer;
+	private int playerTurn;
 	public ControlPanelGUI(Board b){
 		board=b;
 		players=ClueGame.getGamePlayers();
 		thisPlayer=players.get(0);
+		playerTurn=-1;
 		setPreferredSize(new Dimension(50, 150));
 		createLayout();
 		setVisible(true);
 	}
 	public void createLayout(){
 		//JPanel panel = new JPanel();
-		setLayout(new GridLayout(2, 3));
+		setLayout(new GridLayout(2,3));
 		setBorder(new TitledBorder(new EtchedBorder(), "Control Panel"));
 		setSize(new Dimension(220, 200));
 		add(createNamesPanel());
@@ -134,13 +136,19 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 				JOptionPane.showMessageDialog(null, "Please complete your turn.","Turn not over",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
-				int diceRoll=(int)(Math.random()*6);
+				playerTurn++;
+				if(playerTurn>=players.size()){
+					playerTurn=0;
+				}
+				thisPlayer=players.get(playerTurn);
+				whoseTurn.setText(thisPlayer.getName());
+				int diceRoll=(int)(Math.random()*6+1);
 				dieRoll.setText(""+diceRoll);
 				if(thisPlayer instanceof HumanPlayer){
 					board.highlightTargets(thisPlayer.getLocation(),diceRoll);
 				}
 				else{
-					//thisPlayer.takeTurn();
+					board.takeTurn(thisPlayer,diceRoll);
 				}
 			}
 		}

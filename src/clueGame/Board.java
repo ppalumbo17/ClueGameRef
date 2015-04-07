@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -212,6 +213,34 @@ public class Board extends JPanel implements MouseListener{
 		g.drawString("STUDY", 21*rectSize, 2*rectSize);
 
 	
+	}
+	public void takeTurn(Player p,int roll){
+		BoardCell q=p.getLocation();
+		calcTargets(q.getRow(),q.getColumn(),roll);
+		BoardCell room=q;
+		
+		for(BoardCell c: targets){
+			if(c instanceof RoomCell){
+				room=c;
+			}
+		}
+		if(!(room.equals(q))){
+			p.setLocation(room);
+		}
+		else{
+			int item = new Random().nextInt(targets.size());
+			int i = 0;
+			for(BoardCell obj : targets)
+			{
+			    if (i == item)
+			        room=obj;
+			    i = i + 1;
+			}
+			p.setLocation(room);
+		}
+		repaint();
+	}
+	public void setNextPlayer(){
 	}
 	@Override
     public void mousePressed(MouseEvent e) {

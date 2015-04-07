@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -24,10 +25,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import GUI.ControlPanelGUI;
 import GUI.DetectiveNotes;
-
 
 public class ClueGame extends JFrame{
 	private Board gameBoard;
@@ -83,11 +86,47 @@ public class ClueGame extends JFrame{
 		add(gameBoard, BorderLayout.CENTER);
 		controlPanel = new ControlPanelGUI(gameBoard);
 		add(controlPanel, BorderLayout.SOUTH);
+		add(displayCards(),BorderLayout.EAST);
 
 		setVisible(true);
 		JOptionPane.showMessageDialog(null, "You are "+humanPlayer.getName()+", press next player to begin", "Welocme to Clue", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	
+	//Display Cards
+	private JPanel displayCards(){
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(3,1));
+		panel.setBorder(new TitledBorder(new EtchedBorder(), "Cards"));
+		JPanel weps = new JPanel();
+		JPanel rooms = new JPanel();
+		JPanel peeps = new JPanel();
+
+		weps.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
+		rooms.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		peeps.setBorder(new TitledBorder(new EtchedBorder(), "People"));
+		weps.setLayout(new GridLayout(4,1));
+		rooms.setLayout(new GridLayout(4,1));
+		peeps.setLayout(new GridLayout(4,1));
+		
+		for(Card d:humanPlayer.getHand()){
+			JTextField ty=new JTextField(d.getName());
+			if(d.getCardType().equals(Card.CardType.WEAPON)){
+				weps.add(ty);
+			}
+			if(d.getCardType().equals(Card.CardType.ROOM)){
+				rooms.add(ty);
+				}
+			if(d.getCardType().equals(Card.CardType.PERSON)){
+				peeps.add(ty);
+			}
+		}
+		panel.add(weps);
+		panel.add(rooms);
+		panel.add(peeps);
+		panel.setVisible(true);
+		return panel;
+	}
 	//Creates the Menu Bar
 	private JMenu createFileMenu(){
 		JMenu menu = new JMenu("File");
