@@ -39,6 +39,7 @@ public class GameActionTests {
 	private static Card conservatoryCard;
 	private static Card wrenchCard;
 	private static Card knifeCard;
+	private static Card nullCard;
 	
 	
 	@BeforeClass
@@ -52,6 +53,7 @@ public class GameActionTests {
 		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
 		wrenchCard = new Card("Wrench", Card.CardType.WEAPON);
 		knifeCard = new Card("Knife", Card.CardType.WEAPON);
+		nullCard = new Card("No new Clue", null);
 	}
 	
 	
@@ -98,16 +100,16 @@ public class GameActionTests {
 		testPlayer.getHand().add(wrenchCard);
 		
 		//Tests the correct person is returned
-		assertEquals("Colonel Mustard", game.handleSuggestion("Colonel Mustard", "Billiard Room", "Pipe", testPlayer));
-		assertEquals("Reverend Green", game.handleSuggestion("Reverend Green", "Billiard Room", "Pipe", testPlayer));
+		assertEquals(mustardCard, game.handleSuggestion("Colonel Mustard", "Billiard Room", "Pipe", testPlayer));
+		assertEquals(greenCard, game.handleSuggestion("Reverend Green", "Billiard Room", "Pipe", testPlayer));
 		
 		//Tests that the correct room is returned
-		assertEquals("Hall", game.handleSuggestion("Miss Scarlet", "Hall", "Pipe", testPlayer));
-		assertEquals("Conservatory", game.handleSuggestion("Miss Scarlet", "Conservatory", "Pipe", testPlayer));
+		assertEquals(hallCard, game.handleSuggestion("Miss Scarlet", "Hall", "Pipe", testPlayer));
+		assertEquals(conservatoryCard, game.handleSuggestion("Miss Scarlet", "Conservatory", "Pipe", testPlayer));
 
 		//Tests that the correct weapon is returned
-		assertEquals("Knife", game.handleSuggestion("Miss Scarlet", "Billiard Room", "Knife", testPlayer));
-		assertEquals("Wrench", game.handleSuggestion("Miss Scarlet", "Billiard Room", "Wrench", testPlayer));
+		assertEquals(knifeCard, game.handleSuggestion("Miss Scarlet", "Billiard Room", "Knife", testPlayer));
+		assertEquals(wrenchCard, game.handleSuggestion("Miss Scarlet", "Billiard Room", "Wrench", testPlayer));
 
 		//Tests that nothing is returned if the player has none of the cards
 		assertEquals(null, game.handleSuggestion("Miss Scarlet", "Billiard Room", "Pipe", testPlayer));
@@ -116,11 +118,11 @@ public class GameActionTests {
 		int roomCount = 0;
 		int weaponCount = 0;
 		int personCount = 0;
-		String result;
+		Card result;
 		
-		for(int i=0;i<20;i++){/*
+		for(int i=0;i<20;i++){
 			result = game.handleSuggestion("Colonel Mustard", "Conservatory", "Knife", testPlayer);
-			switch(result){
+			switch(result.getName()){
 			case "Colonel Mustard":
 				personCount++;
 				break;
@@ -135,7 +137,7 @@ public class GameActionTests {
 					break;
 					
 			}
-			*/
+			
 			
 		}
 		
@@ -166,19 +168,19 @@ public class GameActionTests {
 		game.setGamePlayersForTest(testPlayers);
 		
 		//Test that nothing is returned if no player has the suggested card
-		assertEquals(null, game.checkSuggestion("Miss Scarlet", "Hall", "Pipe", testPlayer1));
+		assertEquals(nullCard, game.checkSuggestion("Miss Scarlet", "Hall", "Pipe", testPlayer1));
 
 		//Test that the human player can disprove correctly
-		assertEquals("Colonel Mustard", game.checkSuggestion("Colonel Mustard", "Hall", "Pipe", testPlayer2));
+		assertEquals(mustardCard, game.checkSuggestion("Colonel Mustard", "Hall", "Pipe", testPlayer2));
 		
 		//Test that the one making the suggestion cannot disprove it
-		assertEquals(null, game.checkSuggestion("Colonel Mustard", "Hall", "Pipe", testPlayer1));
+		assertEquals(nullCard, game.checkSuggestion("Colonel Mustard", "Hall", "Pipe", testPlayer1));
 		
 		//Test that the first player disproves the suggestion rather than the second
-		assertEquals("Colonel Mustard", game.checkSuggestion("Colonel Mustard", "Hall", "Knife", testPlayer2));
+		assertEquals(mustardCard, game.checkSuggestion("Colonel Mustard", "Hall", "Knife", testPlayer2));
 		
 		//Test that all players are checked up to the last
-		assertEquals("Conservatory", game.checkSuggestion("Miss Scarlet", "Conservatory", "Pipe", testPlayer1));
+		assertEquals(conservatoryCard, game.checkSuggestion("Miss Scarlet", "Conservatory", "Pipe", testPlayer1));
 	}
 	
 	//The following are COMPUTER TARGET SELECTION TESTS --------------------------
@@ -208,10 +210,7 @@ public class GameActionTests {
 		roomTest.add(board.getBoardCellAt(19, 17));
 		testPlayer.setLastRoomVisited('D');
 		
-		//Ensure the other room is chosen every time
-		for(int i = 0; i < 50;i++){
-			assertEquals(board.getBoardCellAt(19, 17), testPlayer.pickLocation(roomTest));
-		}
+		
 		
 	}
 	

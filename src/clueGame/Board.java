@@ -21,6 +21,9 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
+import GUI.ControlPanelGUI;
+import GUI.HumanSuggestion;
+
 
 public class Board extends JPanel implements MouseListener{
 	private boolean turnOver;
@@ -245,7 +248,24 @@ public class Board extends JPanel implements MouseListener{
 		comp.setLocation(next);
 		repaint();
 	}
-	
+	public void humanSuggestion(Suggestion fool){
+		handledSuggestion=ClueGame.checkSuggestion(fool.getPlayer(),fool.getRoom(),fool.getWeapon(),ClueGame.humanPlayer);
+		suggestion=fool;
+		for(Player g:ClueGame.getGamePlayers()){
+			if(g instanceof ComputerPlayer){
+				g.seen.add(handledSuggestion);
+			}
+			if(g.getName().equals(suggestion.getPlayer())){
+				g.setLocation(ClueGame.humanPlayer.getLocation());
+			}
+		}
+		turnOver = true;
+		readyForMouse = false;
+		for(BoardCell c:targets){
+			c.setFlag(false);
+		}
+		repaint();
+	}
 	@Override
     public void mousePressed(MouseEvent e) {
 		if(readyForMouse){
@@ -255,6 +275,9 @@ public class Board extends JPanel implements MouseListener{
 				readyForMouse=false;
 				for(BoardCell c:targets){
 					c.setFlag(false);
+				}
+				if(ClueGame.humanPlayer.getLocation() instanceof RoomCell){
+					new HumanSuggestion(this);
 				}
 				turnOver=true;
 			}

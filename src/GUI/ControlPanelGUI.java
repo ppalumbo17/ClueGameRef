@@ -27,15 +27,18 @@ import clueGame.Board;
 import clueGame.ClueGame;
 import clueGame.HumanPlayer;
 import clueGame.Player;
+import clueGame.RoomCell;
+import clueGame.Suggestion;
 
 public class ControlPanelGUI extends JPanel implements ActionListener{
 
-	JTextField whoseTurn,dieRoll,guessIn,guessOut;
+	protected static JTextField whoseTurn,dieRoll,guessIn,guessOut;
 	Board board;
 	JButton nextPlayer, accusation;
 	ArrayList<Player> players;
 	protected Player thisPlayer;
 	private int playerTurn;
+	public static Suggestion humanSuggestion;
 	public ControlPanelGUI(Board b){
 		board=b;
 		players=ClueGame.getGamePlayers();
@@ -133,6 +136,7 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 				dieRoll.setText(""+diceRoll);
 				if(thisPlayer instanceof HumanPlayer){
 					board.highlightTargets(thisPlayer.getLocation(),diceRoll);
+					
 				}
 				else{
 					board.takeTurn(thisPlayer,diceRoll);
@@ -143,7 +147,11 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 		}
 		if(e.getSource().equals(accusation)){
 			if(!board.checkTurn()){
-				JOptionPane.showMessageDialog(null, "Please complete your turn.","Turn not over",JOptionPane.ERROR_MESSAGE);
+				new HumanSuggestion(board);
+				guessIn.setText(board.getCurrentSuggestion().toString());
+				guessOut.setText(board.getSuggestionAnswer());
+				//board.humanSuggestion(humanSuggestion);
+				
 				playerTurn++;
 				if(playerTurn>=players.size()){
 					playerTurn=0;
