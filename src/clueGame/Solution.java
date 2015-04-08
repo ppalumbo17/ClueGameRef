@@ -5,7 +5,7 @@ public class Solution {
 	private String weapon;
 	private String room;
 	
-	public Solution(String person, String weapon, String room) {
+	public Solution(String person,  String room,String weapon) {
 		super();
 		this.person = person;
 		this.weapon = weapon;

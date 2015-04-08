@@ -30,7 +30,7 @@ import clueGame.Player;
 
 public class ControlPanelGUI extends JPanel implements ActionListener{
 
-	JTextField whoseTurn,dieRoll;
+	JTextField whoseTurn,dieRoll,guessIn,guessOut;
 	Board board;
 	JButton nextPlayer, accusation;
 	ArrayList<Player> players;
@@ -55,19 +55,6 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 		add(createOthersPanel());
 		//return panel;
 	}
-	/*public JPanel createLayout(){
-		JPanel final = new JPanel();
-		JPanel names = createNamesPanel();
-		final.add(names, BorderLayout.WEST);
-		JPanel buttons = createButtonsPanel();
-		final.add(buttons, BorderLayout.EAST);
-		JPanel die = createOthersPanel();
-		final.add(die, BorderLayout.SOUTH);
-		
-		return final;
-		return null;
-		
-	}*/
 	//Ask's Whose turn
 	private JPanel createNamesPanel(){
 		JPanel panel = new JPanel();
@@ -111,12 +98,12 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 		panel.add(die);
 		panel.add(dieRoll);
 		JLabel guess = new JLabel("Guess");
-		JTextField guessIn = new JTextField(5);
+		guessIn = new JTextField(5);
 		guessIn.setEditable(false);
 		panel.add(guess);
 		panel.add(guessIn);
 		JLabel guessResult = new JLabel("Guess Result");
-		JTextField guessOut = new JTextField(5);
+		guessOut = new JTextField(5);
 		guessOut.setEditable(false);
 		panel.add(guessResult);
 		panel.add(guessOut);
@@ -149,11 +136,24 @@ public class ControlPanelGUI extends JPanel implements ActionListener{
 				}
 				else{
 					board.takeTurn(thisPlayer,diceRoll);
+					guessIn.setText(board.getCurrentSuggestion().toString());
+					guessOut.setText(board.getSuggestionAnswer());
 				}
 			}
 		}
 		if(e.getSource().equals(accusation)){
-			
+			if(!board.checkTurn()){
+				JOptionPane.showMessageDialog(null, "Please complete your turn.","Turn not over",JOptionPane.ERROR_MESSAGE);
+				playerTurn++;
+				if(playerTurn>=players.size()){
+					playerTurn=0;
+				}
+				thisPlayer=players.get(playerTurn);
+				whoseTurn.setText(thisPlayer.getName());
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "IT IS NOT YOUR TURN","Not your turn",JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 }

@@ -6,13 +6,15 @@ public class Suggestion {
 	private String weapon;
 	
 	public Suggestion(){
-		super();
+		player="";
+		room="";
+		weapon="";
 	}
 	
 	@Override
 	public String toString() {
-		return "Suggestion [player=" + player + ", room=" + room + ", weapon="
-				+ weapon + "]";
+		return player + "  " + room + "  "
+				+ weapon;
 	}
 
 	@Override

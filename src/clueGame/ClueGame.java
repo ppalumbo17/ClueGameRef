@@ -39,13 +39,13 @@ public class ClueGame extends JFrame{
 	protected static Player humanPlayer;
 	private static Map<Character, String> rooms = new HashMap<Character, String>();
 	private ArrayList<Card> deck = new ArrayList<Card>();
-	private ArrayList<Card> people = new ArrayList<Card>();
-	private ArrayList<Card> weapons = new ArrayList<Card>();
+	private static ArrayList<Card> people = new ArrayList<Card>();
+	private static ArrayList<Card> weapons = new ArrayList<Card>();
 	private Set<Card> dontDeal = new HashSet<Card>();
 	private static ArrayList<Player> gamePlayers = new ArrayList<Player>();
 	private Map<String,ArrayList<Integer>> startingPositions = new HashMap<String, ArrayList<Integer>>();
 	private Map<String, Color> players = new HashMap<String, Color>();
-	private Solution solution;
+	private static Solution solution;
 	private ControlPanelGUI controlPanel;
 	private DetectiveNotes detectiveNotes = new DetectiveNotes();
 	
@@ -181,7 +181,8 @@ public class ClueGame extends JFrame{
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}		
+		}	
+		SetCardTypes(this.deck);
 		selectAnswer();
 		deal();
 		
@@ -328,8 +329,8 @@ public class ClueGame extends JFrame{
 	}
 	
 	//Compares Suggestion to Answer
-	public String checkSuggestion(String person, String room, String weapon, Player suggestingPlayer){
-		String response = null;
+	public static Card checkSuggestion(String person, String room, String weapon, Player suggestingPlayer){
+		Card response = null;
 		for(Player x: gamePlayers){
 			if(x != suggestingPlayer){
 				response = handleSuggestion(person, room, weapon, x);
@@ -338,17 +339,17 @@ public class ClueGame extends JFrame{
 				return response;
 			}
 		}
-		return null;
+		System.out.println(solution.getPerson()+"           "+person+"\n"+solution.getRoom()+"           "+room+"\n"+solution.getWeapon()+"           "+weapon+"\n");
+		return new Card("No new Clue",null);
 	}
 	
-	public String handleSuggestion(String person, String room, String weapon, Player respondingPerson){
-		ArrayList<String> possibleResponses = new ArrayList<String>();
+	public static Card handleSuggestion(String person, String room, String weapon, Player respondingPerson){
+		ArrayList<Card> possibleResponses = new ArrayList<Card>();
 		for(Card x: respondingPerson.getHand()){
-			if(x.getName() == person || x.getName() == room || x.getName() == weapon){
-				possibleResponses.add(x.getName());
+			if(x.getName().equals(person) || x.getName().equals(room) || x.getName().equals(weapon)){
+				possibleResponses.add(x);
 			}
 		}
-		
 		if(possibleResponses.isEmpty()){
 			return null;
 		}
@@ -406,10 +407,10 @@ public class ClueGame extends JFrame{
 		return gamePlayers;
 	}
 	
-	public ArrayList<Card> getPeopleCards(){
+	public static ArrayList<Card> getPeopleCards(){
 		return people;
 	}
-	public ArrayList<Card> getweaponsCards(){
+	public static ArrayList<Card> getweaponsCards(){
 		return weapons;
 	}
 	public void setGamePlayersForTest(ArrayList<Player> testPlayers){

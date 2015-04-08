@@ -35,11 +35,21 @@ public class Board extends JPanel implements MouseListener{
 	private int numDraws = 0;
 	private Graphics gra;
 	private boolean readyForMouse;
+	private Suggestion suggestion;
+	private Card handledSuggestion;
+	public Suggestion getCurrentSuggestion(){
+		return suggestion;
+	}
+	public String getSuggestionAnswer(){
+		return handledSuggestion.getName();
+	}
 	//private Graphics g;
 	public boolean checkTurn(){
 		return turnOver;
 	}
 	public void loadBoardConfig(String layout) throws BadConfigFormatException{
+		handledSuggestion=new Card();
+		suggestion=new Suggestion();
 		turnOver=true;
 		addMouseListener(this);
 		try {
@@ -217,31 +227,25 @@ public class Board extends JPanel implements MouseListener{
 	public void takeTurn(Player p,int roll){
 		BoardCell q=p.getLocation();
 		calcTargets(q.getRow(),q.getColumn(),roll);
-		BoardCell room=q;
-		
-		for(BoardCell c: targets){
-			if(c instanceof RoomCell){
-				room=c;
+		ComputerPlayer comp=(ComputerPlayer)p;
+		BoardCell next=comp.pickLocation(targets);
+		if(next.isRoom()){
+			suggestion=comp.makeSuggestion(ClueGame.getPeopleCards(), ClueGame.getweaponsCards());
+			System.out.println(ClueGame.getRooms().get(comp.getLastRoomVisited()));
+			handledSuggestion=ClueGame.checkSuggestion(suggestion.getPlayer(),suggestion.getRoom(),suggestion.getWeapon(),comp);
+			for(Player g:ClueGame.getGamePlayers()){
+				if(g instanceof ComputerPlayer){
+					g.seen.add(handledSuggestion);
+				}
+				if(g.getName().equals(suggestion.getPlayer())){
+					g.setLocation(next);
+				}
 			}
 		}
-		if(!(room.equals(q))){
-			p.setLocation(room);
-		}
-		else{
-			int item = new Random().nextInt(targets.size());
-			int i = 0;
-			for(BoardCell obj : targets)
-			{
-			    if (i == item)
-			        room=obj;
-			    i = i + 1;
-			}
-			p.setLocation(room);
-		}
+		comp.setLocation(next);
 		repaint();
 	}
-	public void setNextPlayer(){
-	}
+	
 	@Override
     public void mousePressed(MouseEvent e) {
 		if(readyForMouse){

@@ -6,7 +6,7 @@ public class Card {
 	private CardType cardType;
 	
 	public Card(){
-		super();
+		name="";
 	}
 	
 	public Card(String name, CardType cardType){
@@ -31,9 +31,10 @@ public class Card {
 			
 		}
 	}
-	
-	public boolean equals(Card otherCard){
-		return false;
+	@Override
+	public boolean equals(Object o){
+		Card d=(Card)o;
+		return this.name.equals(d.name);
 	}
 	public CardType getCardType() {
 		return cardType;

@@ -33,22 +33,36 @@ public class ComputerPlayer extends Player {
 		Random rand = new Random();
 		int randTarget;
 		if(!roomTargets.isEmpty()){
-			randTarget = rand.nextInt(roomTargets.size());
-			return roomTargets.get(randTarget);
+//			for(Card x: this.seen){
+//				for(BoardCell c: roomTargets){
+//					if(x.getCardType().equals(Card.CardType.ROOM)&&ClueGame.getRooms().get(((RoomCell)c).getRoomInitial()).equals(x.getName())){
+						randTarget = rand.nextInt(roomTargets.size());
+						BoardCell f=roomTargets.get(randTarget);
+						lastRoomVisited=((RoomCell)f).getRoomInitial();
+						return f;
+//					}
+//				}
+//			}
 		}
 		
+		
 		randTarget = rand.nextInt(otherTargets.size());
+		
 		return otherTargets.get(randTarget);
 	}
 	
 	public Suggestion makeSuggestion(ArrayList<Card> people, ArrayList<Card> weapons){
 		Random rand = new Random();
-		ArrayList<Card> people2 = new ArrayList<Card>(people);
-		ArrayList<Card> weapons2 = new ArrayList<Card>(weapons);
-		
+		ArrayList<Card> people2 = new ArrayList<Card>();
+		ArrayList<Card> weapons2 = new ArrayList<Card>();
+		for(Card d:people){
+			people2.add(d);
+		}
+		for(Card d:weapons){
+			weapons2.add(d);
+		}
 		people2.removeAll(this.seen);
 		weapons2.removeAll(this.seen);
-		
 		int randChoice =  rand.nextInt(people2.size());
 		int randChoice2 = rand.nextInt(weapons2.size());
 		
