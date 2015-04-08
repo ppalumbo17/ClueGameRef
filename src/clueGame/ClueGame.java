@@ -339,7 +339,7 @@ public class ClueGame extends JFrame{
 				return response;
 			}
 		}
-		System.out.println(solution.getPerson()+"           "+person+"\n"+solution.getRoom()+"           "+room+"\n"+solution.getWeapon()+"           "+weapon+"\n");
+		JOptionPane.showMessageDialog(null, suggestingPlayer.getName()+"HAS WON THE GAME! \nThe solution was " + person + " " + room + " " + weapon, "GAME OVER!", JOptionPane.INFORMATION_MESSAGE);
 		return new Card("No new Clue",null);
 	}
 	
